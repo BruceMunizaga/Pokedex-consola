@@ -1,0 +1,89 @@
+@startuml
+set separator none
+!pragma useIntermediatePackages false
+left to right direction
+skin rose
+
+package cl.ucn.disc.pa.Taller4 {
+    package Model {
+        abstract class Pokemon <<abstract>> {
+            - Id: String
+            - Nombre: String
+            - Etapa: String
+            - First_tipo: String
+            - Second_tipo: String
+            + Pokemon(Id: String. Nombre: String, Etapa: String, First_tipo: String, Second_tipo: String)
+            + getId(): String
+            + getNombre(): String
+            + getEtapa(): String
+            + getFirst_tipo(): String
+            + getSecond_tipo(): String
+        }
+        class BasicEv_pokemon {
+            - NextEvolucion: String
+            - SecondEvolucion: String
+            + FirstEv_pokemon(Id: String, Nombre: String, Etapa:String,NextEvolucion: String,SecondEvolucion: String,  First_tipo: String, Second_tipo: String)
+            + getNextEvolucion(): String
+        }
+        class FirstEv_pokemon {
+            - NextEvolucion: String
+            - PrevEvolucion: String
+            + FirstEv_pokemon(Id: String, Nombre: String, Etapa:String, NextEvolucion: String, PrevEvolucion: String,
+             First_tipo: String, Second_tipo: String)
+            + getNextEvolucion(): String
+            + getPrevEvolucion() String
+        }
+
+        class SecondEv_pokemon {
+            - PrevEvolucion: String
+            + FirstEv_pokemon(Id: String, Nombre: String, Etapa:String,PrevEvolucion: String, First_tipo: String, Second_tipo: String)
+            + getPrevEvolucion() String
+        }
+
+    }
+    package Services {
+        class ListaPokemon {
+            + ListaPokemon()
+            + agregarPokemon(pokemon: Pokemon): boolean
+        }
+
+        class NodoPokemon {
+            + NodoPokemon()
+            + getPokemon(): Pokemon
+            + getNext(): NodoPokemon
+            + getPrev(): NodoPokemon
+            + setNext(): void
+            + setPrev(): void
+        }
+        interface Sistema <<interface>> {
+            + agregarBasicPokemon(): boolean
+            + agregarFirstEvPokemon(): boolean
+            + agregarSecondEvPokemon(): boolean
+            + rangePokemon(): void
+            + abcPokemon():void
+            + typePokemon(): void
+            + firstEvPokemon(): void
+            + busquedaPersonalizada(id: int): void
+            + desplegarInformacion(): void
+            + desplegarInfoEvolucion(): void
+        }
+        class SistemaImpl {
+            + SistemaImpl()
+        }
+    }
+}
+
+
+
+
+SistemaImpl ..|>   "<<implements>>" Sistema
+FirstEv_pokemon --|> Pokemon
+SecondEv_pokemon --|> Pokemon
+BasicEv_pokemon --|> Pokemon
+Pokemon *--> ListaPokemon: -pokemon: Pokemon
+ListaPokemon *--* "0..1"NodoPokemon: -head: NodoPokemon
+NodoPokemon  *--* "0..1" NodoPokemon: -next: NodoPokemon
+
+
+
+@enduml
